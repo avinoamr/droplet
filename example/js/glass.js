@@ -238,16 +238,22 @@
     window.glass.styles = {
         Mini: "mini",
         CarlFredricksen: function ( that, el ) {
+            var canvas = document.createElement( "canvas" );
+            canvas.classList.add( "glass-carl-fredricksen-canvasbg" )
+            el.appendChild( canvas );
+            // document.body.appendChild( canvas );
 
-            // var canvas = document.createElement( "canvas" );
-            // canvas.classList.add( "glass-carl-fredricksen-canvasbg" );
-            // el.appendChild( canvas );
+            html2canvas( document.body, {
+                onrendered: function ( body ) {
+                    var ctx = canvas.getContext( "2d" );
+                    var rect = canvas.getBoundingClientRect();
+                    console.log( rect.left )
+
+                    ctx.drawImage( body, rect.left, rect.top, 2000, 2000, 0, 0, 2000, 2000 )
+                }
+            })
 
             return "carl-fredricksen";
-
-            function render() {
-                
-            }
         }
     }
 
