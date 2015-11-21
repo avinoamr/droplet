@@ -2,6 +2,7 @@
     window.glass.styles.Mini = function ( items ) {
         var el = document.createElement( "div" );
         el.classList.add( "glass-mini" );
+        el.style.position = "relative";
         
         var hasIcons = items.some( function ( item ) {
             return !!item.icon()
@@ -10,6 +11,7 @@
         items.map( function ( item ) {
             var div = document.createElement( "div" );
             div.classList.add( "item" );
+            div.style.position = "relative";
 
             if ( item.divider() ) {
                 div.classList.add( "glass-divider" )

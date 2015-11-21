@@ -1,0 +1,52 @@
+/* Carl Fredricksen */
+.glass-carl-fredricksen {
+    margin-top: 8px;
+    background: rgba( 255,255,255,.6 );
+    /*background: #def;*/
+    color: rgb(81,83,78);
+    font: 12px Verdana, Geneva, sans-serif;
+    font-weight: thin;
+    border-radius: 5px;
+}
+
+.glass-carl-fredricksen .item {
+    padding: 12px 20px;
+    border-top: 1px solid rgba(0,0,0,.4);
+    display: flex;
+}
+
+.glass-carl-fredricksen .item:first-child {
+    border-top: none;
+}
+
+.glass-carl-fredricksen .item:hover {
+    background: -webkit-linear-gradient( rgba( 255,255,255,.8 ), rgba( 255,255,255,.6 ) );
+    background:    -moz-linear-gradient( rgba( 255,255,255,.8 ), rgba( 255,255,255,.6 ) );
+    background:      -o-linear-gradient( rgba( 255,255,255,.8 ), rgba( 255,255,255,.6 ) );
+    background:         linear-gradient( rgba( 255,255,255,.8 ), rgba( 255,255,255,.6 ) );
+}
+
+.glass-carl-fredricksen .item:last-child:hover {
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.glass-carl-fredricksen .item:first-child:hover {
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+.glass-carl-fredricksen .item .icon {
+    width: 32px;
+}
+
+.glass-carl-fredricksen .maintitle {
+    font-weight: bold;
+    text-shadow: 0px 1px 5px rgba(255, 255, 255, 1);
+}
+
+.glass-carl-fredricksen .subtitle {
+    font-size: 9px;
+    color: rgb(81,83,78);
+}
+

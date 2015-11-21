@@ -1,7 +1,9 @@
 (function () {
     var glass = window.glass;
+    var STYLE = "CarlFredricksen"
 
     var menu = glass()
+        .style( STYLE )
         .trigger( document.querySelector( "#docs" ) );
     menu.add()
         .title( "Install" )
@@ -16,6 +18,7 @@
         .title( "Controls" )
 
     var menu = glass()
+        .style( STYLE )
         .trigger( document.querySelector( "#source-code" ) );
     menu.add()
         .title( "Github" )
@@ -28,6 +31,7 @@
         .icon( "fa fa-book" )
 
     var menu = glass()
+        .style( STYLE )
         .trigger( document.querySelector( "#settings" ) );
     menu.add()
         .title( "My Account" );
