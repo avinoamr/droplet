@@ -1,8 +1,9 @@
 (function () {
     var glass = window.glass;
-    var STYLE = "CarlFredricksen"
+    var STYLE = glass.styles.CarlFredricksen;
 
     var menu = glass()
+        .style( STYLE )
         .trigger( document.querySelector( "#example" ) );
     menu.add()
         .title( "New" )

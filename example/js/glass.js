@@ -104,15 +104,20 @@
         }
 
         glass.create = function () {
-            var style = this.style();
-
             var items = this.items();
             var el = document.createElement( "div" );
-            el.classList.add( "glass-" + style );
+            el.classList.add( "glass-inner" );
 
             items.forEach( function ( item ) {
                 el.appendChild( item.element() );
             })
+
+            var style = this.style();
+
+            if ( typeof style == "function" ) {
+                style = style( this, el );
+            }
+            el.classList.add( "glass-" + style );
 
             var menu = this.el();
             menu.innerHTML = "";
@@ -228,9 +233,23 @@
         return el;
     }
 
-    window.glass.defaultStyle = ""; 
-    //carl-fredricksen";
+    window.glass.defaultStyle = "";
 
+    window.glass.styles = {
+        Mini: "mini",
+        CarlFredricksen: function ( that, el ) {
+
+            // var canvas = document.createElement( "canvas" );
+            // canvas.classList.add( "glass-carl-fredricksen-canvasbg" );
+            // el.appendChild( canvas );
+
+            return "carl-fredricksen";
+
+            function render() {
+                
+            }
+        }
+    }
 
     function getset ( obj, key, default_ )  {
         return function ( v ) {

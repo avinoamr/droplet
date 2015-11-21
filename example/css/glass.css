@@ -1,10 +1,14 @@
 .glass {
     position: absolute;
     display: none;
-    background: white;
-    box-shadow: 0px 2px 3px 0px rgba(0,0,0,.4);
     color: black;
     font: 12px Verdana, Geneva, sans-serif;
+}
+
+.glass-inner {
+    position: relative;
+    background: white;
+    box-shadow: 0px 2px 3px 0px rgba(0,0,0,.4);
 }
 
 .glass-item {
@@ -14,6 +18,8 @@
     padding: 8px 14px;
     min-width: 120px;
     cursor: pointer;
+    filter: url('#blur');
+    filter: blur(5px);
 }
 
 .glass-item:hover {

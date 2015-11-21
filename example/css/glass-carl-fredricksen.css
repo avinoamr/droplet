@@ -1,17 +1,60 @@
 /* Carl Fredricksen */
 .glass-carl-fredricksen {
     margin-top: 8px;
-    background: rgba( 255,255,255,.6 );
+    background: rgba(255,255,255,.6);
     color: rgb(81,83,78);
-    font: 12px Verdana, Geneva, sans-serif;
-    font-weight: thin;
     border-radius: 5px;
     box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.75);
 }
 
+/*.glass-carl-fredricksen-canvasbg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}*/
+
+.glass-carl-fredricksen .glass-item {
+    padding: 12px 20px;
+    border-top: 1px solid rgba( 255, 255, 255, .7 );
+    border-left: 1px solid rgba( 255, 255, 255, .7 );
+    border-bottom: 1px solid rgba( 0, 0, 0, .4 );
+    border-right: 1px solid rgba( 0, 0, 0, .4 );
+    display: flex;
+}
+
+.glass-carl-fredricksen .glass-item:hover {
+    background: -webkit-linear-gradient( rgba( 255,255,255,.9 ), rgba( 255,255,255,.1 ) );
+    background:    -moz-linear-gradient( rgba( 255,255,255,.9 ), rgba( 255,255,255,.1 ) );
+    background:      -o-linear-gradient( rgba( 255,255,255,.9 ), rgba( 255,255,255,.1 ) );
+    background:         linear-gradient( rgba( 255,255,255,.9 ), rgba( 255,255,255,.1 ) );
+}
+
+.glass-carl-fredricksen > .glass-item:last-child {
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.glass-carl-fredricksen > .glass-item:first-child {
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+.glass-carl-fredricksen .glass-maintitle {
+    font-weight: bold;
+    text-shadow: 0px 1px 5px rgba(255, 255, 255, 1);
+}
+
+.glass-carl-fredricksen .glass-subtitle {
+    font-size: 9px;
+    /*color: rgb(81,83,78);*/
+}
+
+/*
+
 .glass-carl-fredricksen .item {
     padding: 12px 20px;
-    /*border-top: 1px solid rgba(0,0,0,.4);*/
     border-top: 1px solid rgba( 255, 255, 255, .7 );
     border-left: 1px solid rgba( 255, 255, 255, .7 );
     border-bottom: 1px solid rgba( 0, 0, 0, .4 );
@@ -50,3 +93,4 @@
     color: rgb(81,83,78);
 }
 
+*/
