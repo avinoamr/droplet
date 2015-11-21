@@ -1,0 +1,29 @@
+/* Mini */
+.glass-mini {
+    background: #262b31;
+    color: #bbbfca;
+    font: 12px Verdana, Geneva, sans-serif;
+    font-weight: thin;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.glass-mini .item {
+    padding: 12px 20px;
+    border-top: 1px solid #373f4a;
+    text-shadow: 1px 1px 5px rgba(18, 23, 27, 1);
+}
+
+.glass-mini .item:hover {
+    color: white;
+    border-top-color: #7ab0dc;
+    background: -webkit-linear-gradient( #559ad3, #416db4 );
+    background:    -moz-linear-gradient( #559ad3, #416db4 );
+    background:      -o-linear-gradient( #559ad3, #416db4 );
+    background:         linear-gradient( #559ad3, #416db4 );
+}
+
+.glass-mini .item:last-child:hover {
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
