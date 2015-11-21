@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title></title>
+        <title>Glass.js</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -18,10 +18,15 @@
         <link rel="stylesheet" href="fonts/lobster/stylesheet.css">
         
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css">
-        <link rel="stylesheet" href="css/glass.css">
-        <link rel="stylesheet" href="css/glass-mini.css">
         
+
+
+
+        <link rel="stylesheet" href="css/glass.css">
         <script src="js/glass.js"></script>
+
+        <link rel="stylesheet" href="css/glass-mini.css">
+        <script src="js/glass-mini.js"></script>
 
     </head>
     <body>
@@ -33,9 +38,19 @@
         <main>
             <header>
                 <h1>Glass</h1>
-                <button id="menu">
-                    Menu <i class="caret">&#9660;</i>
-                </button>
+                <div>
+                    <center>
+                        <button id="docs" class="glass-mini-btn">
+                            Documentation
+                        </button>
+                        <button id="source-code" class="glass-mini-btn">
+                            Source Code
+                        </button>
+                        <button id="settings" class="glass-mini-btn">
+                            Settings
+                        </button>
+                    </center>
+                </div>
             </header>
 
             Customizable floating menus in Javascript

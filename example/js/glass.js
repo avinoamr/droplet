@@ -27,6 +27,9 @@
 
         glass.trigger = function ( trigger ) {
             trigger.addEventListener( "click", function () {
+                if ( this.visible() ) {
+                    return this.hide();
+                }
                 this.create()
                     .show()
                     .position( trigger );
@@ -42,13 +45,17 @@
             menu.style.left = rect.left + "px";
             menu.style.top = ( rect.top + rect.height ) + "px";
 
-            if ( rect.left > document.body.offsetWidth / 2 ) {
-                var dwidth = menu.getBoundingClientRect().width - rect.width;
-                menu.style.left = ( parseInt( menu.style.left ) - dwidth ) + "px";
-            }
+            // if ( rect.left > document.body.offsetWidth / 2 ) {
+            //     var dwidth = menu.getBoundingClientRect().width - rect.width;
+            //     menu.style.left = ( parseInt( menu.style.left ) - dwidth ) + "px";
+            // }
 
 
             return this;
+        }
+
+        glass.visible = function () {
+            return menu.style.display == "block";
         }
 
         glass.show = function () {
@@ -57,7 +64,7 @@
         }
 
         glass.hide = function () {
-            menu.style.display = undefined;
+            menu.style.display = "";
             return this;
         }
 
@@ -77,24 +84,7 @@
     }
 
     window.glass.defaultStyle = "Mini";
-    window.glass.styles = {
-        Mini: function ( items ) {
-            var     el = document.createElement( "div" );
-            el.classList.add( "glass-mini" );
-            
-            items.map( function ( item ) {
-                var div = document.createElement( "div" );
-                div.classList.add( "item" );
-                div.innerHTML = [
-                    "<span class='title'>" + item.title() + "</span>"
-                ];
-
-                el.appendChild( div );
-            })
-
-            return el;
-        },
-    }
+    window.glass.styles = {}
 
 
     function getset ( obj, key, default_ )  {

@@ -12,6 +12,7 @@
     padding: 12px 20px;
     border-top: 1px solid #373f4a;
     text-shadow: 1px 1px 5px rgba(18, 23, 27, 1);
+    display: flex;
 }
 
 .glass-mini .item:hover {
@@ -26,4 +27,30 @@
 .glass-mini .item:last-child:hover {
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
+}
+
+.glass-mini .item .icon {
+    width: 32px;
+}
+
+.glass-mini .subtitle {
+    font-size: 9px;
+    color: rgba( 187, 191, 202, .6 );
+}
+
+.glass-mini-btn {
+    font: 12px Verdana, Geneva, sans-serif;
+    font-weight: thin;
+    color: white;
+    padding: 12px 20px;
+    text-shadow: 1px 1px 5px rgba(18, 23, 27, 1);
+    background: -webkit-linear-gradient( #4b5463, #353c46 );
+    background:    -moz-linear-gradient( #4b5463, #353c46 );
+    background:      -o-linear-gradient( #4b5463, #353c46 );
+    background:         linear-gradient( #4b5463, #353c46 );
+    border-top: 1px solid #5a626f;
+    border-right: 1px solid #242c37;
+    border-left: 1px solid #242c37;
+    border-bottom: none;
+    outline: none;
 }
