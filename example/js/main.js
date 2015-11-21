@@ -3,6 +3,27 @@
     var STYLE = "CarlFredricksen"
 
     var menu = glass()
+        .trigger( document.querySelector( "#example" ) );
+    menu.add()
+        .title( "New" );
+    menu.add()
+        .title( "Open..." )
+        .icon( "fa fa-folder-open" );
+    menu.add()
+        .title( "Save..." )
+        .icon( "fa fa-file-text" );
+    menu.add()
+        .title( "More Options" )
+        .divider( true );
+
+    var folder = menu.addFolder()
+        .title( "Edit" );
+    folder.add()
+        .title( "Copy" );
+    folder.add()
+        .title( "Paste" );
+
+    var menu = glass()
         .style( STYLE )
         .trigger( document.querySelector( "#docs" ) );
     menu.add()

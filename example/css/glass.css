@@ -1,5 +1,56 @@
 .glass {
     position: absolute;
     display: none;
+    background: white;
+    box-shadow: 0px 2px 3px 0px rgba(0,0,0,.4);
+    color: black;
+    font: 12px Verdana, Geneva, sans-serif;
 }
+
+.glass-item {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 8px 14px;
+    min-width: 120px;
+    cursor: pointer;
+}
+
+.glass-item:hover {
+    background: #eeeeee;
+}
+
+.glass-icon {
+    width: 20px;
+    margin-right: 8px;
+    font-size: 16px; /* for font-icons */
+    color: #555555;
+    text-align: center;
+}
+
+.glass-divider {
+    position: relative;
+    border-top: 1px solid #ebebeb;
+}
+
+.glass-folder {
+    height: 3px;
+    overflow: hidden;
+    transition: height 1s;
+}
+.glass-folder-open {
+    height: 100px;
+    transition: height 1s;
+}
+
+
+
+
+
+.glass-icon-caret {
+    font-size: 11px;
+}
+
+
+
 
