@@ -19,6 +19,7 @@
                 title: getset( obj, "title", "" ),
                 subtitle: getset( obj, "subtitle", "" ),
                 icon: getset( obj, "icon", "" ),
+                helper: getset( obj, "helper", "" ),
                 divider: getset( obj, "divider", false ),
                 element: buildElement,
                 menu: function () { return glass },
@@ -33,6 +34,29 @@
             item.items = getset( obj, "items", [] )
             item.folder = item.items;
             item.add = this.add.bind( item );
+            
+            // default caret icon
+            var icon = document.createElement( "div" );
+            icon.classList.add( "glass-icon-caret" );
+            icon.innerHTML = "&#9654;"
+            item.icon = getset( obj, "icon", icon );
+
+            return item;
+        }
+
+        glass.addMenu = function () {
+            var obj = {};
+            var item = this.add();
+            item.submenu = getset( obj, "submenu", window.glass() );
+            item.add = item.submenu().add.bind( item.submenu() );
+            item.addFolder = item.submenu().addFolder.bind( item.submenu() )
+            item.addMenu = item.submenu().addMenu.bind( item.submenu() )
+
+            // default caret helper
+            var helper = document.createElement( "div" );
+            helper.classList.add( "glass-icon-caret" );
+            helper.innerHTML = "&#9654;"
+            item.helper = getset( obj, "helper", helper );
             return item;
         }
 
@@ -114,7 +138,7 @@
     function buildElement() {
         var items = this.menu().items();
         var hasIcons = items.some( function ( item ) {
-            return !!getIcon( item );
+            return !!item.icon();
         })
 
         var el = document.createElement( "div" );
@@ -126,28 +150,48 @@
         el.classList.add( "glass-item" );
 
         if ( hasIcons ) {
-            var icon = document.createElement( "div" );
-            icon.setAttribute( "class", "glass-icon " + getIcon( this ) );
-            icon.innerHTML = getIcon( this ).html || "";
+            var icon = this.icon();
+            if ( !( icon instanceof Element ) ) {
+                icon = document.createElement( "div" );;
+                icon.setAttribute( "class", this.icon() );
+            }
+            icon.classList.add( "glass-icon" );
             el.appendChild( icon );
         }
 
-        var content = document.createElement( "glass-content" );
+        var content = document.createElement( "div" );
+        content.classList.add( "glass-content" )
 
         if ( this.title() ) {
-            var maintitle = document.createElement( "div" );
+            var maintitle = this.title();
+            if ( !( maintitle instanceof Element ) ) {
+                maintitle = document.createElement( "div" );
+                maintitle.innerHTML = this.title();
+            }
             maintitle.classList.add( "glass-maintitle" );
-            maintitle.innerHTML = this.title();
             content.appendChild( maintitle );
         }
         if ( this.subtitle() ) {
-            var subtitle = document.createElement( "div" );
+            var subtitle = this.subtitle();
+            if ( !( subtitle instanceof Element ) ) {
+                var subtitle = document.createElement( "div" );
+                subtitle.innerHTML = this.subtitle();
+            }
             subtitle.classList.add( "glass-subtitle" );
-            subtitle.innerHTML = this.subtitle();
             content.appendChild( subtitle );
         }
 
         el.appendChild( content );
+
+        if ( this.helper() ) {
+            var helper = this.helper();
+            if ( !( helper instanceof Element ) ) {
+                helper = document.createElement( "div" );
+                helper.innerHTML = this.helper();
+            }
+            helper.classList.add( "glass-helper" );
+            el.appendChild( helper );
+        }
 
         if ( this.folder ) {
             var folder = document.createElement( "div" );
@@ -157,7 +201,22 @@
             })
 
             el.addEventListener( "click", function () {
-                folder.classList.toggle( "glass-folder-open" );
+                icon.classList.toggle( "glass-open" )
+                folder.classList.toggle( "glass-open" );
+
+                // we can't animate the height via CSS (only the max-height, but 
+                // it creates visual artifacts), so we have to compute it.
+                var isOpen = folder.classList.contains( "glass-open" )
+
+                if ( !isOpen ) {
+                    folder.style.height = "";
+                } else {
+                    var h = [].slice.call( folder.children )
+                        .reduce( function ( h, child ) {
+                            return h + child.getBoundingClientRect().height;
+                        }, 0 )
+                    folder.style.height = h + "px";
+                }
             })
 
             var el_ = document.createElement( "div" );

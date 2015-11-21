@@ -17,7 +17,7 @@
 }
 
 .glass-item:hover {
-    background: #eeeeee;
+    background: rgba(238,238,238,1);
 }
 
 .glass-icon {
@@ -28,27 +28,42 @@
     text-align: center;
 }
 
+.glass-subtitle {
+    font-size: 9px;
+    color: rgba(0,0,0,.7);
+}
+
+.glass-content {
+    flex-grow: 1;
+}
+
+.glass-helper {
+    margin-left: 42px;
+    color: #777777;
+}
+
 .glass-divider {
     position: relative;
     border-top: 1px solid #ebebeb;
 }
 
 .glass-folder {
-    height: 3px;
+    height: 0px;
     overflow: hidden;
-    transition: height 1s;
+    transition: height .5s;
 }
-.glass-folder-open {
-    height: 100px;
-    transition: height 1s;
-}
-
 
 
 
 
 .glass-icon-caret {
     font-size: 11px;
+    transition: transform .5s;
+}
+
+.glass-icon-caret.glass-open {
+    /*font-size: 100px;*/
+    transform: rotate(90deg);
 }
 
 

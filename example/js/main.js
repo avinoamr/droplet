@@ -5,23 +5,27 @@
     var menu = glass()
         .trigger( document.querySelector( "#example" ) );
     menu.add()
-        .title( "New" );
+        .title( "New" )
+        .helper( "Ctrl+N" );
     menu.add()
         .title( "Open..." )
+        .helper( "Ctrl+O" )
         .icon( "fa fa-folder-open" );
     menu.add()
         .title( "Save..." )
         .icon( "fa fa-file-text" );
     menu.add()
-        .title( "More Options" )
         .divider( true );
 
     var folder = menu.addFolder()
-        .title( "Edit" );
+        .title( "Folder" );
     folder.add()
         .title( "Copy" );
     folder.add()
         .title( "Paste" );
+
+    var submenu = menu.addMenu()
+        .title( "Submenu" );
 
     var menu = glass()
         .style( STYLE )
