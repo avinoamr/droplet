@@ -1,13 +1,13 @@
 .glass {
     position: absolute;
     display: none;
-    color: black;
     font: 12px Verdana, Geneva, sans-serif;
 }
 
 .glass-inner {
     position: relative;
     background: white;
+    color: black;
     box-shadow: 0px 2px 3px 0px rgba(0,0,0,.4);
 }
 
@@ -18,8 +18,6 @@
     padding: 8px 14px;
     min-width: 120px;
     cursor: pointer;
-    filter: url('#blur');
-    filter: blur(5px);
 }
 
 .glass-item:hover {
@@ -50,7 +48,7 @@
 
 .glass-divider {
     position: relative;
-    border-top: 1px solid #ebebeb;
+    border-top: 1px solid rgba(235,235,235,1);
 }
 
 .glass-folder {

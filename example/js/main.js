@@ -1,6 +1,6 @@
 (function () {
     var glass = window.glass;
-    var STYLE = glass.styles.CarlFredricksen;
+    var STYLE = glass.styles.Dark;
 
     var menu = glass()
         .style( STYLE )

@@ -236,20 +236,23 @@
     window.glass.defaultStyle = "";
 
     window.glass.styles = {
+        Standard: "",
         Mini: "mini",
+        Dark: "dark",
         CarlFredricksen: function ( that, el ) {
             var canvas = document.createElement( "canvas" );
             canvas.classList.add( "glass-carl-fredricksen-canvasbg" )
             el.appendChild( canvas );
-            // document.body.appendChild( canvas );
 
             html2canvas( document.body, {
                 onrendered: function ( body ) {
                     var ctx = canvas.getContext( "2d" );
-                    var rect = canvas.getBoundingClientRect();
-                    console.log( rect.left )
-
-                    ctx.drawImage( body, rect.left, rect.top, 2000, 2000, 0, 0, 2000, 2000 )
+                    var rect = el.getBoundingClientRect();
+                    canvas.setAttribute( "width", rect.width );
+                    canvas.setAttribute( "height", rect.height );
+                    ctx.filter = "blur(5px)";
+                    ctx.drawImage( body, rect.left, rect.top, rect.width, rect.height, 0, 0, rect.width, rect.height )
+                    // ctx.drawImage( body, rect.left - 3, rect.top - 2, rect.width, rect.height, 0, 0, rect.width, rect.height )
                 }
             })
 
