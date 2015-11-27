@@ -1,2 +1,2 @@
 # glass
-Customizable floating menus in Javascript
+Stylable floating menus in Javascript 
