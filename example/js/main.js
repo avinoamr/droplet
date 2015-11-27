@@ -1,6 +1,6 @@
 (function () {
     var droplet = window.droplet;
-    var STYLE = droplet.styles.Dark;
+    var STYLE = droplet.styles.Standard;
 
     var menu = droplet()
         .style( STYLE )

@@ -4,28 +4,78 @@
 
         var menu = document.createElement( "div" );
         menu.classList.add( "droplet" );
-        document.body.appendChild( menu );
+        menu.$ = {};
 
         var options = {}
-        function droplet() {}
-        droplet.el = getset( options, "el", menu );
+        function droplet() { this.show() }
+        droplet.element = function () {
+            menu.innerHTML = "";
+            this.items().forEach( function ( item ) {
+                menu.appendChild( item.element() );
+            });
+            menu.classList.add( "droplet-" + this.style() );
+            return menu;
+        }
+
+        // droplet.el = getset( options, "el", menu );
         droplet.style = getset( options, "style", window.droplet.defaultStyle );
         droplet.items = getset( options, "items", [] );
 
         droplet.add = function () {
             var obj = { events: [] };
             var items = this.items();
+            var el = createItem()
 
             items.push({
-                title: getset( obj, "title", "" ),
-                subtitle: getset( obj, "subtitle", "" ),
-                icon: getset( obj, "icon", "" ),
-                helper: getset( obj, "helper", "" ),
-                divider: getset( obj, "divider", false ),
-                events: getset( obj, "events", [] ),
-                element: buildElement,
+                title: function ( v ) {
+                    if ( !arguments.length ) {
+                        return el.$.maintitle.innerHTML;
+                    }
+                    el.$.maintitle.innerHTML = v;
+                    return this;
+                },
+                subtitle: function ( v ) {
+                    if ( !arguments.length ) {
+                        return el.$.subtitle.innerHTML;
+                    }
+                    el.$.subtitle.innerHTML = v;
+                    return this;
+                },
+                icon: function ( v ) {
+                    if ( !arguments.length ) {
+                        return el.$.icon.getAttribute( "class" )
+                            .replace( "droplet-icon ", "" );
+                    }
+
+                    el.$.icon.innerHTML = "";
+                    if ( v instanceof Element ) {
+                        el.$.icon.appendChild( v );
+                    } else {
+                        el.$.icon.setAttribute( "class", "droplet-icon " + v );
+                    }
+                    
+                    return this;
+                },
+                helper: function ( v ) {
+                    if ( !arguments.length ) {
+                        return el.$.helper.innerHTML;
+                    }
+                    el.$.helper.innerHTML = v;
+                    return this;
+                },
+                divider: function ( v ) {
+                    if ( arguments.length == 0 ) {
+                        return el.classList.contains( "droplet-divider" );
+                    }
+                    el.classList.toggle( "droplet-item", !v );
+                    el.classList.toggle( "droplet-divider", !!v );
+                    return this;
+                },
+                element: function () {
+                    return el;
+                },
                 on: function ( type, listener ) {
-                    this.events().push({ type: type, listener: listener });
+                    el.addEventListener( type, listener );
                     return this;
                 },
                 menu: function () { return droplet },
@@ -37,15 +87,54 @@
         droplet.addFolder = function () {
             var obj = {};
             var item = this.add();
-            item.items = getset( obj, "items", [] )
-            item.folder = item.items;
+
+            var icon = item.element().$.icon;
+
+            var el = document.createElement( "div" );
+            el.appendChild( item.element() );
+            el.$ = {};
+
+            el.$.folder = document.createElement( "div" );
+            el.$.folder.classList.add( "droplet-folder" );
+            el.appendChild( el.$.folder );
+
+            item.items = getset( obj, "items", [] );
             item.add = this.add.bind( item );
             
             // default caret icon
             var icon = document.createElement( "div" );
             icon.classList.add( "droplet-icon-caret" );
             icon.innerHTML = "&#9654;"
-            item.icon = getset( obj, "icon", icon );
+            item.icon( icon );
+
+            item.element = function () {
+                el.$.folder.innerHTML = "";
+                this.items().forEach( function ( item ) {
+                    el.$.folder.appendChild( item.element() );
+                })
+                return el;
+            }
+
+            item.on( "click", function () {
+                var folder = el.$.folder;
+
+                icon.classList.toggle( "droplet-open" )
+                folder.classList.toggle( "droplet-open" );
+
+                // we can't animate the height via CSS (only the max-height, but 
+                // it creates visual artifacts), so we have to compute it.
+                var isOpen = folder.classList.contains( "droplet-open" )
+
+                if ( !isOpen ) {
+                    folder.style.height = "";
+                } else {
+                    var h = [].slice.call( folder.children )
+                        .reduce( function ( h, child ) {
+                            return h + child.getBoundingClientRect().height;
+                        }, 0 )
+                    folder.style.height = h + "px";
+                }
+            })
 
             return item;
         }
@@ -71,15 +160,14 @@
                 if ( this.visible() ) {
                     return this.hide();
                 }
-                this.create()
-                    .show()
+                this.show()
                     .position( trigger );
             }.bind( this ) )
             return this;
         }
 
         droplet.position = function ( element ) {
-            var menu = this.el();
+            var menu = this.element();
 
             var rect = element.getBoundingClientRect();
 
@@ -100,145 +188,46 @@
         }
 
         droplet.show = function () {
-            menu.style.display = "block";
+            var element = this.element();
+            if ( !element.parentNode ) {
+                document.body.appendChild( element );
+            }
+            element.style.display = "block";
             return this;
         }
 
         droplet.hide = function () {
-            menu.style.display = "";
+            this.element().style.display = "";
             return this;
         }
-
-        droplet.create = function () {
-            var items = this.items();
-            var el = document.createElement( "div" );
-            el.classList.add( "droplet-inner" );
-
-            items.forEach( function ( item ) {
-                el.appendChild( item.element() );
-            })
-
-            var style = this.style();
-
-            if ( typeof style == "function" ) {
-                style = style( this, el );
-            }
-            el.classList.add( "droplet-" + style );
-
-            var menu = this.el();
-            menu.innerHTML = "";
-            menu.appendChild( el );
-            return this;
-        }
-
 
         return droplet;
     }
 
-    function getIcon( item ) {
-        var icon = item.icon();
-
-        if ( !icon && item.folder ) {
-            icon = new String( "droplet-icon-caret" );
-            icon.html = "&#9654;"
-        }
-
-        return icon;
-    }
-
-    function buildElement() {
-        var items = this.menu().items();
-        var hasIcons = items.some( function ( item ) {
-            return !!item.icon();
-        })
-
-        var el = this._el = document.createElement( "div" );
-        this.events().forEach( function ( event ) {
-            el.addEventListener( event.type, event.listener );
-        })
-
-        if ( this.divider() ) {
-            el.classList.add( "droplet-divider" );
-            return el;
-        }
-
+    function createItem() {
+        var el = document.createElement( "div" );
         el.classList.add( "droplet-item" );
+        el.$ = {};
 
-        if ( hasIcons ) {
-            var icon = this.icon();
-            if ( !( icon instanceof Element ) ) {
-                icon = document.createElement( "div" );;
-                icon.setAttribute( "class", this.icon() );
-            }
-            icon.classList.add( "droplet-icon" );
-            el.appendChild( icon );
-        }
+        el.$.icon = document.createElement( "div" );
+        el.$.icon.classList.add( "droplet-icon" );
+        el.appendChild( el.$.icon );
 
-        var content = document.createElement( "div" );
-        content.classList.add( "droplet-content" )
+        el.$.content = document.createElement( "div" );
+        el.$.content.classList.add( "droplet-content" );
+        el.appendChild( el.$.content );
 
-        if ( this.title() ) {
-            var maintitle = this.title();
-            if ( !( maintitle instanceof Element ) ) {
-                maintitle = document.createElement( "div" );
-                maintitle.innerHTML = this.title();
-            }
-            maintitle.classList.add( "droplet-maintitle" );
-            content.appendChild( maintitle );
-        }
-        if ( this.subtitle() ) {
-            var subtitle = this.subtitle();
-            if ( !( subtitle instanceof Element ) ) {
-                var subtitle = document.createElement( "div" );
-                subtitle.innerHTML = this.subtitle();
-            }
-            subtitle.classList.add( "droplet-subtitle" );
-            content.appendChild( subtitle );
-        }
+        el.$.maintitle = document.createElement( "div" );
+        el.$.maintitle.classList.add( "droplet-maintitle" );
+        el.$.content.appendChild( el.$.maintitle );
 
-        el.appendChild( content );
+        el.$.subtitle = document.createElement( "div" );
+        el.$.subtitle.classList.add( "droplet-subtitle" );
+        el.$.content.appendChild( el.$.subtitle );
 
-        if ( this.helper() ) {
-            var helper = this.helper();
-            if ( !( helper instanceof Element ) ) {
-                helper = document.createElement( "div" );
-                helper.innerHTML = this.helper();
-            }
-            helper.classList.add( "droplet-helper" );
-            el.appendChild( helper );
-        }
-
-        if ( this.folder ) {
-            var folder = document.createElement( "div" );
-            folder.classList.add( "droplet-folder" );
-            this.folder().forEach( function ( item ) {
-                folder.appendChild( item.element() );
-            })
-
-            el.addEventListener( "click", function () {
-                icon.classList.toggle( "droplet-open" )
-                folder.classList.toggle( "droplet-open" );
-
-                // we can't animate the height via CSS (only the max-height, but 
-                // it creates visual artifacts), so we have to compute it.
-                var isOpen = folder.classList.contains( "droplet-open" )
-
-                if ( !isOpen ) {
-                    folder.style.height = "";
-                } else {
-                    var h = [].slice.call( folder.children )
-                        .reduce( function ( h, child ) {
-                            return h + child.getBoundingClientRect().height;
-                        }, 0 )
-                    folder.style.height = h + "px";
-                }
-            })
-
-            var el_ = document.createElement( "div" );
-            el_.appendChild( el );
-            el_.appendChild( folder );
-            el = el_;
-        }
+        el.$.helper = document.createElement( "div" );
+        el.$.helper.classList.add( "droplet-helper" );
+        el.appendChild( el.$.helper );
 
         return el;
     }

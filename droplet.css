@@ -1,11 +1,7 @@
 .droplet {
     position: absolute;
     display: none;
-    font: 12px Verdana, Geneva, sans-serif;
-}
-
-.droplet-inner {
-    position: relative;
+    font: 13px Verdana, Geneva, sans-serif;
     background: white;
     color: black;
     box-shadow: 0px 2px 3px 0px rgba(0,0,0,.4);
@@ -26,6 +22,7 @@
 
 .droplet-icon {
     width: 20px;
+    /*height: 20px;*/
     margin-right: 8px;
     font-size: 16px; /* for font-icons */
     color: #555555;
