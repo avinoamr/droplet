@@ -97,7 +97,7 @@ textarea {
 
 body {
     /*background: url(../img/pink_rice.png);*/
-    background: #beaed4;
+    background: #5C6BC0;
     color: white;
     font: 28px "latothin", Arial, sans-serif;
     font-weight: 200;
@@ -125,13 +125,51 @@ main > header > h1 {
     padding: 0;
     margin: 0;
     font-weight: 200;
-    /*flex-grow: 1;*/
 }
 
-main > header > div {
+#buttons button {
+    background: rgba(255,255,255,.7);
+    color: black;
+    border: none;
+    font: 14px Verdana, Geneva, sans-serif;
+    outline: none;
+    padding: 8px 22px;
+    display: block;
+    float: left;
+    border-right: 1px solid rgba(0,0,0,.1)
+}
+
+#buttons button:first-child {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+#buttons button:last-child {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.grow {
     flex-grow: 1;
 }
 
+/*button {
+    font: 12px Verdana, Geneva, sans-serif;
+    font-weight: thin;
+    color: white;
+    padding: 12px 20px;
+    text-shadow: 1px 1px 5px rgba(18, 23, 27, 1);
+    background: -webkit-linear-gradient( #4b5463, #353c46 );
+    background:    -moz-linear-gradient( #4b5463, #353c46 );
+    background:      -o-linear-gradient( #4b5463, #353c46 );
+    background:         linear-gradient( #4b5463, #353c46 );
+    border-top: 1px solid #5a626f;
+    border-right: 1px solid #242c37;
+    border-left: 1px solid #242c37;
+    border-bottom: none;
+    outline: none;
+}
+*/
 
 
 

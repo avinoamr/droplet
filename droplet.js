@@ -1,34 +1,40 @@
 (function () {
     var components = {};
-    window.glass = function () {
+    window.droplet = function () {
 
         var menu = document.createElement( "div" );
-        menu.classList.add( "glass" );
+        menu.classList.add( "droplet" );
         document.body.appendChild( menu );
 
         var options = {}
-        function glass() {}
-        glass.el = getset( options, "el", menu );
-        glass.style = getset( options, "style", window.glass.defaultStyle );
-        glass.items = getset( options, "items", [] );
+        function droplet() {}
+        droplet.el = getset( options, "el", menu );
+        droplet.style = getset( options, "style", window.droplet.defaultStyle );
+        droplet.items = getset( options, "items", [] );
 
-        glass.add = function () {
-            var obj = {};
+        droplet.add = function () {
+            var obj = { events: [] };
             var items = this.items();
+
             items.push({
                 title: getset( obj, "title", "" ),
                 subtitle: getset( obj, "subtitle", "" ),
                 icon: getset( obj, "icon", "" ),
                 helper: getset( obj, "helper", "" ),
                 divider: getset( obj, "divider", false ),
+                events: getset( obj, "events", [] ),
                 element: buildElement,
-                menu: function () { return glass },
+                on: function ( type, listener ) {
+                    this.events().push({ type: type, listener: listener });
+                    return this;
+                },
+                menu: function () { return droplet },
             })
 
             return items[ items.length - 1 ];
         }
 
-        glass.addFolder = function () {
+        droplet.addFolder = function () {
             var obj = {};
             var item = this.add();
             item.items = getset( obj, "items", [] )
@@ -37,30 +43,30 @@
             
             // default caret icon
             var icon = document.createElement( "div" );
-            icon.classList.add( "glass-icon-caret" );
+            icon.classList.add( "droplet-icon-caret" );
             icon.innerHTML = "&#9654;"
             item.icon = getset( obj, "icon", icon );
 
             return item;
         }
 
-        glass.addMenu = function () {
+        droplet.addMenu = function () {
             var obj = {};
             var item = this.add();
-            item.submenu = getset( obj, "submenu", window.glass() );
+            item.submenu = getset( obj, "submenu", window.droplet() );
             item.add = item.submenu().add.bind( item.submenu() );
             item.addFolder = item.submenu().addFolder.bind( item.submenu() )
             item.addMenu = item.submenu().addMenu.bind( item.submenu() )
 
             // default caret helper
             var helper = document.createElement( "div" );
-            helper.classList.add( "glass-icon-caret" );
+            helper.classList.add( "droplet-icon-caret" );
             helper.innerHTML = "&#9654;"
             item.helper = getset( obj, "helper", helper );
             return item;
         }
 
-        glass.trigger = function ( trigger ) {
+        droplet.trigger = function ( trigger ) {
             trigger.addEventListener( "click", function () {
                 if ( this.visible() ) {
                     return this.hide();
@@ -72,7 +78,7 @@
             return this;
         }
 
-        glass.position = function ( element ) {
+        droplet.position = function ( element ) {
             var menu = this.el();
 
             var rect = element.getBoundingClientRect();
@@ -89,24 +95,24 @@
             return this;
         }
 
-        glass.visible = function () {
+        droplet.visible = function () {
             return menu.style.display == "block";
         }
 
-        glass.show = function () {
+        droplet.show = function () {
             menu.style.display = "block";
             return this;
         }
 
-        glass.hide = function () {
+        droplet.hide = function () {
             menu.style.display = "";
             return this;
         }
 
-        glass.create = function () {
+        droplet.create = function () {
             var items = this.items();
             var el = document.createElement( "div" );
-            el.classList.add( "glass-inner" );
+            el.classList.add( "droplet-inner" );
 
             items.forEach( function ( item ) {
                 el.appendChild( item.element() );
@@ -117,7 +123,7 @@
             if ( typeof style == "function" ) {
                 style = style( this, el );
             }
-            el.classList.add( "glass-" + style );
+            el.classList.add( "droplet-" + style );
 
             var menu = this.el();
             menu.innerHTML = "";
@@ -126,14 +132,14 @@
         }
 
 
-        return glass;
+        return droplet;
     }
 
     function getIcon( item ) {
         var icon = item.icon();
 
         if ( !icon && item.folder ) {
-            icon = new String( "glass-icon-caret" );
+            icon = new String( "droplet-icon-caret" );
             icon.html = "&#9654;"
         }
 
@@ -146,13 +152,17 @@
             return !!item.icon();
         })
 
-        var el = document.createElement( "div" );
+        var el = this._el = document.createElement( "div" );
+        this.events().forEach( function ( event ) {
+            el.addEventListener( event.type, event.listener );
+        })
+
         if ( this.divider() ) {
-            el.classList.add( "glass-divider" );
+            el.classList.add( "droplet-divider" );
             return el;
         }
 
-        el.classList.add( "glass-item" );
+        el.classList.add( "droplet-item" );
 
         if ( hasIcons ) {
             var icon = this.icon();
@@ -160,12 +170,12 @@
                 icon = document.createElement( "div" );;
                 icon.setAttribute( "class", this.icon() );
             }
-            icon.classList.add( "glass-icon" );
+            icon.classList.add( "droplet-icon" );
             el.appendChild( icon );
         }
 
         var content = document.createElement( "div" );
-        content.classList.add( "glass-content" )
+        content.classList.add( "droplet-content" )
 
         if ( this.title() ) {
             var maintitle = this.title();
@@ -173,7 +183,7 @@
                 maintitle = document.createElement( "div" );
                 maintitle.innerHTML = this.title();
             }
-            maintitle.classList.add( "glass-maintitle" );
+            maintitle.classList.add( "droplet-maintitle" );
             content.appendChild( maintitle );
         }
         if ( this.subtitle() ) {
@@ -182,7 +192,7 @@
                 var subtitle = document.createElement( "div" );
                 subtitle.innerHTML = this.subtitle();
             }
-            subtitle.classList.add( "glass-subtitle" );
+            subtitle.classList.add( "droplet-subtitle" );
             content.appendChild( subtitle );
         }
 
@@ -194,24 +204,24 @@
                 helper = document.createElement( "div" );
                 helper.innerHTML = this.helper();
             }
-            helper.classList.add( "glass-helper" );
+            helper.classList.add( "droplet-helper" );
             el.appendChild( helper );
         }
 
         if ( this.folder ) {
             var folder = document.createElement( "div" );
-            folder.classList.add( "glass-folder" );
+            folder.classList.add( "droplet-folder" );
             this.folder().forEach( function ( item ) {
                 folder.appendChild( item.element() );
             })
 
             el.addEventListener( "click", function () {
-                icon.classList.toggle( "glass-open" )
-                folder.classList.toggle( "glass-open" );
+                icon.classList.toggle( "droplet-open" )
+                folder.classList.toggle( "droplet-open" );
 
                 // we can't animate the height via CSS (only the max-height, but 
                 // it creates visual artifacts), so we have to compute it.
-                var isOpen = folder.classList.contains( "glass-open" )
+                var isOpen = folder.classList.contains( "droplet-open" )
 
                 if ( !isOpen ) {
                     folder.style.height = "";
@@ -233,32 +243,11 @@
         return el;
     }
 
-    window.glass.defaultStyle = "";
-
-    window.glass.styles = {
+    window.droplet.styles = {
         Standard: "",
-        Mini: "mini",
         Dark: "dark",
-        CarlFredricksen: function ( that, el ) {
-            var canvas = document.createElement( "canvas" );
-            canvas.classList.add( "glass-carl-fredricksen-canvasbg" )
-            el.appendChild( canvas );
-
-            html2canvas( document.body, {
-                onrendered: function ( body ) {
-                    var ctx = canvas.getContext( "2d" );
-                    var rect = el.getBoundingClientRect();
-                    canvas.setAttribute( "width", rect.width );
-                    canvas.setAttribute( "height", rect.height );
-                    ctx.filter = "blur(5px)";
-                    ctx.drawImage( body, rect.left, rect.top, rect.width, rect.height, 0, 0, rect.width, rect.height )
-                    // ctx.drawImage( body, rect.left - 3, rect.top - 2, rect.width, rect.height, 0, 0, rect.width, rect.height )
-                }
-            })
-
-            return "carl-fredricksen";
-        }
     }
+    window.droplet.defaultStyle = "Standard";
 
     function getset ( obj, key, default_ )  {
         return function ( v ) {

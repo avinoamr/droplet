@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Glass.js</title>
+        <title>Droplet.js</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -18,17 +18,9 @@
         <link rel="stylesheet" href="fonts/lobster/stylesheet.css">
         
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css">
-        
-        <script src="js/vendor/html2canvas.js"></script>
 
-
-
-        <link rel="stylesheet" href="css/glass.css">
-        <script src="js/glass.js"></script>
-
-        <link rel="stylesheet" href="css/glass-dark.css">
-        <link rel="stylesheet" href="css/glass-mini.css">
-        <link rel="stylesheet" href="css/glass-carl-fredricksen.css">
+        <link rel="stylesheet" href="../droplet.css">
+        <script src="../droplet.js"></script>
 
     </head>
     <body>
@@ -39,26 +31,25 @@
         <!-- Add your site or application content here -->
         <main>
             <header>
-                <h1>Glass</h1>
-                <div>
-                    <center>
-                        <button id="example" class="glass-mini-btn">
-                            Example
-                        </button>
-                        <button id="docs" class="glass-mini-btn">
-                            Documentation
-                        </button>
-                        <button id="source-code" class="glass-mini-btn">
-                            Source Code
-                        </button>
-                        <button id="settings" class="glass-mini-btn">
-                            Settings
-                        </button>
-                    </center>
+                <h1 class="grow">Droplet</h1>
+                <div id="buttons">
+                    <button class="droplet-arrow-down" id="style">
+                        Style
+                    </button>
+                    <button id="example">
+                        Example
+                    </button>
+                    <button id="docs">
+                        Documentation
+                    </button>
+                    <button id="source-code">
+                        Source Code
+                    </button>
                 </div>
+                <div class="grow"></div>
             </header>
 
-            Customizable floating menus in Javascript
+            Stylable floating menus in Javascript
         </main>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

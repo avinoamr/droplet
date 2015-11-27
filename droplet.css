@@ -1,17 +1,17 @@
-.glass {
+.droplet {
     position: absolute;
     display: none;
     font: 12px Verdana, Geneva, sans-serif;
 }
 
-.glass-inner {
+.droplet-inner {
     position: relative;
     background: white;
     color: black;
     box-shadow: 0px 2px 3px 0px rgba(0,0,0,.4);
 }
 
-.glass-item {
+.droplet-item {
     display: flex;
     align-items: center;
     position: relative;
@@ -20,11 +20,11 @@
     cursor: pointer;
 }
 
-.glass-item:hover {
+.droplet-item:hover {
     background: rgba(238,238,238,1);
 }
 
-.glass-icon {
+.droplet-icon {
     width: 20px;
     margin-right: 8px;
     font-size: 16px; /* for font-icons */
@@ -32,26 +32,26 @@
     text-align: center;
 }
 
-.glass-subtitle {
+.droplet-subtitle {
     font-size: 9px;
     color: rgba(0,0,0,.7);
 }
 
-.glass-content {
+.droplet-content {
     flex-grow: 1;
 }
 
-.glass-helper {
+.droplet-helper {
     margin-left: 42px;
     color: #777777;
 }
 
-.glass-divider {
+.droplet-divider {
     position: relative;
     border-top: 1px solid rgba(235,235,235,1);
 }
 
-.glass-folder {
+.droplet-folder {
     height: 0px;
     overflow: hidden;
     transition: height .5s;
@@ -59,17 +59,38 @@
 
 
 
-
-.glass-icon-caret {
+/** UTILS **/
+.droplet-icon-caret {
     font-size: 11px;
     transition: transform .5s;
 }
 
-.glass-icon-caret.glass-open {
-    /*font-size: 100px;*/
+.droplet-icon-caret.droplet-open {
     transform: rotate(90deg);
 }
 
+
+/** STYLE: DARK */
+.droplet-dark {
+    background: black;
+    color: white;
+}
+
+.droplet-dark .droplet-icon {
+    color: #d0d0d0;
+}
+
+.droplet-dark .droplet-item:hover {
+    background: rgba(40,40,40,1);
+}
+
+.droplet-dark .droplet-subtitle {
+    color: rgba(255,255,255,.7);
+}
+
+.droplet-dark .droplet-divider {
+    border-top: 1px solid rgba(70,70,70,1);
+}
 
 
 

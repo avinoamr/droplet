@@ -1,8 +1,26 @@
 (function () {
-    var glass = window.glass;
-    var STYLE = glass.styles.Dark;
+    var droplet = window.droplet;
+    var STYLE = droplet.styles.Dark;
 
-    var menu = glass()
+    var menu = droplet()
+        .style( STYLE )
+        .trigger( document.querySelector( "#style" ) );
+
+    var standard = menu.add()
+        .title( "Standard" )
+        .icon( "fa fa-check" )
+        .on( "click", function () {
+            standard.icon( "fa fa-check" );
+            dark.icon( null );
+        })
+    var dark = menu.add()
+        .title( "Dark" )
+        .on( "click", function () {
+            standard.icon( null );
+            dark.icon( "fa fa-check" );
+        })
+
+    var menu = droplet()
         .style( STYLE )
         .trigger( document.querySelector( "#example" ) );
     menu.add()
@@ -28,7 +46,7 @@
     var submenu = menu.addMenu()
         .title( "Submenu" );
 
-    var menu = glass()
+    var menu = droplet()
         .style( STYLE )
         .trigger( document.querySelector( "#docs" ) );
     menu.add()
@@ -43,7 +61,7 @@
     menu.add()
         .title( "Controls" )
 
-    var menu = glass()
+    var menu = droplet()
         .style( STYLE )
         .trigger( document.querySelector( "#source-code" ) );
     menu.add()
@@ -55,15 +73,5 @@
     menu.add()
         .title( "Browse" )
         .icon( "fa fa-book" )
-
-    var menu = glass()
-        .style( STYLE )
-        .trigger( document.querySelector( "#settings" ) );
-    menu.add()
-        .title( "My Account" );
-    menu.add()
-        .title( "Billing Settings" )
-    menu.add()
-        .title( "Notifications" )
     
 })()
