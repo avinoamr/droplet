@@ -60,15 +60,13 @@
                     if ( !arguments.length ) {
                         return el.$.helper.innerHTML;
                     }
-                    el.$.helper.innerHTML = v;
-                    return this;
-                },
-                divider: function ( v ) {
-                    if ( arguments.length == 0 ) {
-                        return el.classList.contains( "droplet-divider" );
+
+                    el.$.helper.innerHTML = "";
+                    if ( v instanceof Element ) {
+                        el.$.helper.appendChild( v );
+                    } else {
+                        el.$.helper.innerHTML = v;
                     }
-                    el.classList.toggle( "droplet-item", !v );
-                    el.classList.toggle( "droplet-divider", !!v );
                     return this;
                 },
                 element: function () {
@@ -82,6 +80,14 @@
             })
 
             return items[ items.length - 1 ];
+        }
+
+        droplet.addDivider = function () {
+            var item = this.add();
+            var el = item.element();
+            el.classList.remove( "droplet-item" );
+            el.classList.add( "droplet-divider" );
+            return {}
         }
 
         droplet.addFolder = function () {
@@ -100,6 +106,7 @@
 
             item.items = getset( obj, "items", [] );
             item.add = this.add.bind( item );
+            item.addDivider = this.addDivider.bind( item );
             
             // default caret icon
             var icon = document.createElement( "div" );
@@ -142,16 +149,20 @@
         droplet.addMenu = function () {
             var obj = {};
             var item = this.add();
-            item.submenu = getset( obj, "submenu", window.droplet() );
-            item.add = item.submenu().add.bind( item.submenu() );
-            item.addFolder = item.submenu().addFolder.bind( item.submenu() )
-            item.addMenu = item.submenu().addMenu.bind( item.submenu() )
 
             // default caret helper
             var helper = document.createElement( "div" );
             helper.classList.add( "droplet-icon-caret" );
             helper.innerHTML = "&#9654;"
-            item.helper = getset( obj, "helper", helper );
+            item.helper( helper );
+
+            // submenu
+            var submenu = window.droplet().trigger( item.element() );
+            item.add = submenu.add.bind( submenu );
+            item.addDivider = submenu.addDivider.bind( submenu );
+            item.addFolder = submenu.addFolder.bind( submenu );
+            item.addMenu = submenu.addMenu.bind( submenu );
+
             return item;
         }
 

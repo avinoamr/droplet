@@ -33,8 +33,7 @@
     menu.add()
         .title( "Save..." )
         .icon( "fa fa-file-text" );
-    menu.add()
-        .divider( true );
+    menu.addDivider();
 
     var folder = menu.addFolder()
         .title( "Folder" );
@@ -42,9 +41,13 @@
         .title( "Copy" );
     folder.add()
         .title( "Paste" );
+    folder.addDivider();
 
     var submenu = menu.addMenu()
         .title( "Submenu" );
+
+    submenu.add()
+        .title( "One" );
 
     var menu = droplet()
         .style( STYLE )
