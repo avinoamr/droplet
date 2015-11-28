@@ -1,0 +1,24 @@
+{
+  "name": "droplet",
+  "main": "droplet.js",
+  "homepage": "https://github.com/avinoamr/droplet",
+  "authors": [
+    "Roi Avinoam <avinoamr@gmail.com>"
+  ],
+  "description": "Stylable floating menus in Javascript",
+  "moduleType": [],
+  "keywords": [
+    "droplet",
+    "dropdown",
+    "menu"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "example"
+  ]
+}

@@ -1,2 +1,2 @@
-# glass
+# droplet
 Stylable floating menus in Javascript 
