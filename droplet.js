@@ -1,13 +1,33 @@
 (function () {
-    var components = {};
+    var PLACEMENT = {
+        TOP: "top",
+        BOTTOM: "bottom",
+        LEFT: "left",
+        RIGHT: "right",
+    }
+
+    // auto-hide all droplets on click on the background
+    document.addEventListener( "click", function ( ev ) {
+        var droplet = parentSelector( ev.target, ".droplet" );
+        if ( !droplet ) {
+            hideAll()
+        }
+    })
+
     window.droplet = function () {
 
         var menu = document.createElement( "div" );
         menu.classList.add( "droplet" );
         menu.$ = {};
+        menu.__droplet = droplet;
 
         var options = {}
-        function droplet() { this.show() }
+        function droplet( target ) { 
+            setTimeout( function () {
+                droplet.show().position( target );
+            })
+        }
+
         droplet.element = function () {
             menu.innerHTML = "";
             this.items().forEach( function ( item ) {
@@ -20,13 +40,22 @@
         // droplet.el = getset( options, "el", menu );
         droplet.style = getset( options, "style", window.droplet.defaultStyle );
         droplet.items = getset( options, "items", [] );
+        droplet.placement = getset( options, "placement", PLACEMENT.BOTTOM );
 
         droplet.add = function () {
             var obj = { events: [] };
             var items = this.items();
             var el = createItem()
 
-            items.push({
+            el.addEventListener( "mousemove", function () {
+                if ( item.submenu ) {
+                    item.submenu()( item.element() );
+                } else {
+                    hideAll( droplet );
+                }
+            })
+
+            var item = {
                 title: function ( v ) {
                     if ( !arguments.length ) {
                         return el.$.maintitle.innerHTML;
@@ -77,9 +106,11 @@
                     return this;
                 },
                 menu: function () { return droplet },
-            })
+            };
 
-            return items[ items.length - 1 ];
+            items.push( item );
+
+            return item;
         }
 
         droplet.addDivider = function () {
@@ -157,11 +188,18 @@
             item.helper( helper );
 
             // submenu
-            var submenu = window.droplet().trigger( item.element() );
+            var submenu = window.droplet()
+                .placement( PLACEMENT.RIGHT );
             item.add = submenu.add.bind( submenu );
             item.addDivider = submenu.addDivider.bind( submenu );
             item.addFolder = submenu.addFolder.bind( submenu );
             item.addMenu = submenu.addMenu.bind( submenu );
+            item.submenu = function () { return submenu }
+            submenu.parent = function () { return droplet };
+
+            // item.element().addEventListener( "mousemove", function () {
+            //     submenu( this )
+            // })
 
             return item;
         }
@@ -171,25 +209,27 @@
                 if ( this.visible() ) {
                     return this.hide();
                 }
-                this.show()
-                    .position( trigger );
+
+                droplet( trigger );
             }.bind( this ) )
             return this;
         }
 
-        droplet.position = function ( element ) {
+        droplet.position = function ( target ) {
             var menu = this.element();
+            var placement = this.placement();
 
-            var rect = element.getBoundingClientRect();
+            var source = menu.getBoundingClientRect();
+            var target = target.getBoundingClientRect();
 
-            menu.style.left = rect.left + "px";
-            menu.style.top = ( rect.top + rect.height ) + "px";
-
-            // if ( rect.left > document.body.offsetWidth / 2 ) {
-            //     var dwidth = menu.getBoundingClientRect().width - rect.width;
-            //     menu.style.left = ( parseInt( menu.style.left ) - dwidth ) + "px";
-            // }
-
+            if ( placement == PLACEMENT.BOTTOM ) {
+                menu.style.top = ( target.top + target.height ) + "px";
+                menu.style.left = target.left + "px";
+            } else if ( placement == PLACEMENT.RIGHT ) {
+                var targetMid = target.top + ( target.height / 2 );
+                menu.style.top = ( targetMid - ( source.height / 2 ) ) + "px";
+                menu.style.left = ( target.left + target.width ) + "px"
+            }
 
             return this;
         }
@@ -243,6 +283,21 @@
         return el;
     }
 
+    function hideAll( except ) {
+        var skip = [];
+        while( except ) {
+            skip.push( except );
+            except = except.parent ? except.parent() : null;
+        }
+
+        var menus = document.querySelectorAll( ".droplet" );
+        for ( var i = 0 ; i < menus.length ; i += 1 ) {
+            if ( skip.indexOf( menus[ i ].__droplet ) == -1 ) {
+                menus[ i ].__droplet.hide();
+            }
+        }
+    }
+
     window.droplet.styles = {
         Standard: "",
         Dark: "dark",
@@ -256,6 +311,15 @@
             }
             obj[ key ] = v;
             return this;
+        }
+    }
+
+    function parentSelector( el, selector ) {
+        while ( el && el.matches ) {
+            if ( el.matches( selector ) ) {
+                return el;
+            }
+            el = el.parentNode;
         }
     }
 

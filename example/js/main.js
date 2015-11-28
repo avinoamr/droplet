@@ -45,9 +45,12 @@
 
     var submenu = menu.addMenu()
         .title( "Submenu" );
-
     submenu.add()
         .title( "One" );
+    submenu.add()
+        .title( "Two" );
+    submenu.add()
+        .title( "Three" );
 
     var menu = droplet()
         .style( STYLE )
