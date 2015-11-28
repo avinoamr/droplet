@@ -22,29 +22,39 @@
         menu.__droplet = droplet;
 
         var options = {}
-        function droplet( target ) { 
-            setTimeout( function () {
-                droplet.show().position( target );
-            })
+        function droplet( target ) {
+
+            if ( !droplet.visible() ) {
+                requestAnimationFrame( function () {
+                    droplet.show();
+                    reposition();
+                })
+            }
+
+            return this;
+
+            function reposition () {
+                if ( !droplet.visible() ) {
+                    return
+                }
+
+                droplet.position( target );
+                requestAnimationFrame( reposition );
+            }
         }
 
         droplet.element = function () {
-            menu.innerHTML = "";
-            this.items().forEach( function ( item ) {
-                menu.appendChild( item.element() );
-            });
             menu.classList.add( "droplet-" + this.style() );
             return menu;
         }
 
         // droplet.el = getset( options, "el", menu );
         droplet.style = getset( options, "style", window.droplet.defaultStyle );
-        droplet.items = getset( options, "items", [] );
         droplet.placement = getset( options, "placement", PLACEMENT.BOTTOM );
 
         droplet.add = function () {
             var obj = { events: [] };
-            var items = this.items();
+            // var items = this.items();
             var el = createItem()
 
             el.addEventListener( "mousemove", function () {
@@ -108,7 +118,7 @@
                 menu: function () { return droplet },
             };
 
-            items.push( item );
+            this.element().appendChild( el );
 
             return item;
         }
@@ -122,40 +132,27 @@
         }
 
         droplet.addFolder = function () {
-            var obj = {};
             var item = this.add();
+            var folder = document.createElement( "div" );
+            folder.classList.add( "droplet-folder" );
+            this.element().appendChild( folder );
 
-            var icon = item.element().$.icon;
+            item.element = function () {
+                return folder;
+            }
 
-            var el = document.createElement( "div" );
-            el.appendChild( item.element() );
-            el.$ = {};
-
-            el.$.folder = document.createElement( "div" );
-            el.$.folder.classList.add( "droplet-folder" );
-            el.appendChild( el.$.folder );
-
-            item.items = getset( obj, "items", [] );
             item.add = this.add.bind( item );
             item.addDivider = this.addDivider.bind( item );
-            
+            item.addFolder = this.addFolder.bind( item );
+
             // default caret icon
             var icon = document.createElement( "div" );
             icon.classList.add( "droplet-icon-caret" );
             icon.innerHTML = "&#9654;"
             item.icon( icon );
 
-            item.element = function () {
-                el.$.folder.innerHTML = "";
-                this.items().forEach( function ( item ) {
-                    el.$.folder.appendChild( item.element() );
-                })
-                return el;
-            }
-
+            // toggle behavior
             item.on( "click", function () {
-                var folder = el.$.folder;
-
                 icon.classList.toggle( "droplet-open" )
                 folder.classList.toggle( "droplet-open" );
 
@@ -196,10 +193,6 @@
             item.addMenu = submenu.addMenu.bind( submenu );
             item.submenu = function () { return submenu }
             submenu.parent = function () { return droplet };
-
-            // item.element().addEventListener( "mousemove", function () {
-            //     submenu( this )
-            // })
 
             return item;
         }
