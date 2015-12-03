@@ -209,6 +209,11 @@
         }
 
         droplet.position = function ( target ) {
+            if ( !target || !target.parentNode ) {
+                // target is no longer part of the DOM
+                return;
+            }
+
             var menu = this.element();
             var placement = this.placement();
 
