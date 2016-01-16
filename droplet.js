@@ -6,6 +6,13 @@
         RIGHT: "right",
     }
 
+    var ALIGNMENT = {
+        TOP: "top",
+        BOTTOM: "bottom",
+        LEFT: "left",
+        RIGHT: "right"
+    }
+
     // auto-hide all droplets on click on the background
     document.addEventListener( "click", function ( ev ) {
         var droplet = parentSelector( ev.target, ".droplet" );
@@ -51,6 +58,7 @@
         // droplet.el = getset( options, "el", menu );
         droplet.style = getset( options, "style", window.droplet.defaultStyle );
         droplet.placement = getset( options, "placement", PLACEMENT.BOTTOM );
+        droplet.alignment = getset( options, "alignment", ALIGNMENT.LEFT );
 
         droplet.add = function () {
             var obj = { events: [] };
@@ -216,13 +224,19 @@
 
             var menu = this.element();
             var placement = this.placement();
+            var alignment = this.alignment();
 
             var source = menu.getBoundingClientRect();
             var target = target.getBoundingClientRect();
 
             if ( placement == PLACEMENT.BOTTOM ) {
                 menu.style.top = ( target.top + target.height ) + "px";
-                menu.style.left = target.left + "px";
+                if ( alignment == ALIGNMENT.RIGHT ) {
+                    var deltaWidth = target.width - source.width;
+                    menu.style.left = ( deltaWidth + target.left ) + "px";
+                } else {
+                    menu.style.left = target.left + "px";
+                }
             } else if ( placement == PLACEMENT.RIGHT ) {
                 var targetMid = target.top + ( target.height / 2 );
                 menu.style.top = ( targetMid - ( source.height / 2 ) ) + "px";
@@ -301,6 +315,9 @@
         Dark: "dark",
     }
     window.droplet.defaultStyle = "Standard";
+
+    window.droplet.PLACEMENT = PLACEMENT;
+    window.droplet.ALIGNMENT = ALIGNMENT;
 
     function getset ( obj, key, default_ )  {
         return function ( v ) {

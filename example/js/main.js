@@ -69,7 +69,8 @@
 
     var menu = droplet()
         .style( STYLE )
-        .trigger( document.querySelector( "#source-code" ) );
+        .trigger( document.querySelector( "#source-code" ) )
+        .alignment( droplet.ALIGNMENT.RIGHT );
     menu.add()
         .title( "Github" )
         .icon( "fa fa-github" );
